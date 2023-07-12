@@ -1,6 +1,22 @@
-import Image from 'next/image'
+"use client";
 
-export default function Home() {
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+import { fetchPhotos } from '@/services/photos';
+
+const Home: React.FC = () => {
+  const [photos, setPhotos] = useState([]);
+  
+  useEffect(() => {
+    fetchPhotos({})
+      .then((data) => {
+        setPhotos(data);
+      });
+  }, []);
+
+  console.log(photos);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
@@ -111,3 +127,5 @@ export default function Home() {
     </main>
   )
 }
+
+export default Home;
