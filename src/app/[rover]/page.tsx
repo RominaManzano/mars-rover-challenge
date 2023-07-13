@@ -1,9 +1,9 @@
-import React from 'react';
-// import Image from 'next/image';
+"use client";
 
-import { fetchPhotos } from '@/services/photos';
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 
-export const getStaticPaths = async () => ({
+export const getStaticPaths = () => ({
   paths: [
     { params: { rover: 'curiosity' } },
     { params: { rover: 'opportunity' } },
@@ -12,9 +12,20 @@ export const getStaticPaths = async () => ({
   fallback: true,
 });
 
-const RoverPage: React.FC = async ({ params }: any) => {
+const RoverPage: React.FC = ({ params }: any) => {
   const { rover } = params;
-  const { photos } = await fetchPhotos({ rover });
+  const [photos, setPhotos] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/rovers/${rover}/photos?sol=1000&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}`
+    ).then((response) => {
+      response.json()
+        .then((data) => {
+          setPhotos(data.photos);
+        });
+    }); 
+  }, [rover]);
 
   if (!photos || photos.length === 0) {
     return <div>Loading...</div>;
@@ -26,20 +37,19 @@ const RoverPage: React.FC = async ({ params }: any) => {
         {rover}
       </h1>
       
-      {photos.map((photo: any) => {
-        return (
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {photos.map((photo: any) => (
           <div key={photo.id}>
-            {photo.id} {photo.img_src}
-            {/* <Image
-              src="http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG"
+            <Image
+              src={photo.img_src}
               alt={photo.id}
               width={200}
               height={200}
-            /> */}
-            <img src={photo.img_src} alt={photo.id} width={200} height={200} />
+              unoptimized
+            />
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   )
 }
