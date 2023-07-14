@@ -63,7 +63,7 @@ const usePhotos = ({ rover }: UsePhotosParams) => {
     }).catch(() => {
       setIsLoading(false);
     });
-  }, [rover, currentPage]);
+  }, [rover, currentPage, camera, earthDate, solDate]);
 
   useEffect(() => {
     fetchPhotos();
