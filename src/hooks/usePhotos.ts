@@ -11,19 +11,19 @@ interface UsePhotosParams {
   rover: string;
 }
 
-interface BuildUrlParams extends UsePhotosParams {
-  currentPage: number;
+export interface Filters {
+  page: number;
   camera: RoverCamera | null;
   earthDate: string | null,
   solDate: string;
 }
 
-type BuildUrl = (params: BuildUrlParams) => string;
+type BuildUrl = (params: Filters & UsePhotosParams) => string;
 
 const buildUrl: BuildUrl = ({
   rover,
   camera,
-  currentPage,
+  page,
   earthDate,
   solDate,
 }) => {
@@ -31,7 +31,7 @@ const buildUrl: BuildUrl = ({
   const cameraQuery = camera ? `&camera=${camera.id}` : '';
   const earthDateQuery = earthDate ? `&earth_date=${dayjs().format('YYYY-MM-DD')}` : '';
   const solQuery = !earthDate ? `&sol=${solDate}` : '';
-  const pageQuery = `&page=${currentPage + 1}`;
+  const pageQuery = `&page=${page + 1}`;
 
   return `${apiUrl}${roverQuery}?api_key=${apiKey}${solQuery}${earthDateQuery}${pageQuery}${cameraQuery}`;
 };
@@ -39,21 +39,19 @@ const buildUrl: BuildUrl = ({
 const usePhotos = ({ rover }: UsePhotosParams) => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [currentPage, setCurrentPage] = useState(0);
-  const [camera, setCamera] = useState<RoverCamera | null>(null);
-  const [earthDate, setEarthDate] = useState<string | null>(null);
-  const [solDate, setSolDate] = useState<string>('2890');
+  const [filters, setFilters] = useState<Filters>({
+    page: 0,
+    camera: null,
+    earthDate: null,
+    solDate: '2890',
+  });
 
   const fetchPhotos = useCallback(() => {
     setIsLoading(true);
 
     fetch(buildUrl({
       rover,
-      currentPage,
-      camera,
-      earthDate,
-      solDate,
+      ...filters,
     })).then((response) => {
       response.json()
         .then((data) => {
@@ -63,20 +61,18 @@ const usePhotos = ({ rover }: UsePhotosParams) => {
     }).catch(() => {
       setIsLoading(false);
     });
-  }, [rover, currentPage, camera, earthDate, solDate]);
+  }, [rover, filters.page]);
 
   useEffect(() => {
+    console.log('useEffect')
     fetchPhotos();
-  }, [rover, currentPage, fetchPhotos]);
+  }, [rover, filters.page, fetchPhotos]);
 
   return {
-    currentPage,
+    filters,
     isLoading,
     photos,
-    setCurrentPage,
-    setCamera,
-    setEarthDate,
-    setSolDate,
+    setFilters,
   };
 };
 

@@ -23,14 +23,18 @@ export const getStaticPaths = () => ({
 const RoverPage: React.FC<Props> = ({ params }) => {
   const { rover } = params;
   const {
-    currentPage,
+    filters,
     isLoading,
     photos,
-    setCurrentPage,
+    setFilters,
   } = usePhotos({ rover });
 
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (!photos || photos.length === 0) {
+    return <div>No photos found</div>;
   }
 
   return (
@@ -60,12 +64,15 @@ const RoverPage: React.FC<Props> = ({ params }) => {
         // breakClassName={'break-me'}
         // activeClassName={'active'}
         containerClassName="flex gap-2 mt-8"
-        initialPage={currentPage}
+        initialPage={filters.page}
         pageCount={30}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={({ selected }) => {
-          setCurrentPage(selected);
+          setFilters(filters => ({
+            ...filters,
+            page: selected,
+          }));
         }}
       />
     </div>
