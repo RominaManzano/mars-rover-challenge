@@ -3,7 +3,10 @@
 import React from 'react';
 import Image from 'next/image';
 import ReactPaginate from 'react-paginate';
-import usePhotos from '@/hooks/usePhotos';
+import usePhotos, { Filters } from '@/hooks/usePhotos';
+import { Field, Form, Formik } from 'formik';
+
+import cameras from '@/constants/cameras';
 
 export interface Props {
   params: {
@@ -29,13 +32,14 @@ const RoverPage: React.FC<Props> = ({ params }) => {
     setFilters,
   } = usePhotos({ rover });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const noPhotosAvailable = !isLoading && (!photos || photos.length === 0);
+  const photosAvailable = !isLoading && (photos && photos.length > 0);
 
-  if (!photos || photos.length === 0) {
-    return <div>No photos found</div>;
-  }
+  const handleSubmit = (values: Filters) => {
+    setFilters(filters => ({
+      ...filters, ...values,
+    }));
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -43,19 +47,48 @@ const RoverPage: React.FC<Props> = ({ params }) => {
         {rover}
       </h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        {photos.map((photo: any) => (
-          <div key={photo.id}>
-            <Image
-              src={photo.img_src}
-              alt={photo.id}
-              width={200}
-              height={200}
-              unoptimized
-            />
-          </div>
-        ))}
+      <div className="w-full">
+        <Formik initialValues={filters} onSubmit={handleSubmit}>
+          <Form className="w-full flex flex-col md:flex-row justify-center gap-4 my-8 text-black">
+            <Field
+              as="select"
+              name="camera"
+            >
+              <option value="">All Cameras</option>
+              {cameras[rover].map((camera) => (
+                <option key={camera.id} value={camera.id}>
+                  {camera.name}
+                </option>
+              ))}
+            </Field>
+            <Field name="earthDate" as="input" type="date" />
+            <Field name="solDate" />
+
+            <button type="submit" className="text-white">
+              Apply
+            </button>
+          </Form>
+        </Formik>
       </div>
+
+      {isLoading && <div>Loading...</div>}
+      {noPhotosAvailable && <div>No photos found</div>}
+
+      {photosAvailable && (
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {photos.map((photo: any) => (
+            <div key={photo.id}>
+              <Image
+                src={photo.img_src}
+                alt={photo.id}
+                width={200}
+                height={200}
+                unoptimized
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       <ReactPaginate
         previousLabel={'previous'}

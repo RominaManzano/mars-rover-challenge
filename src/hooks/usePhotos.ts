@@ -13,7 +13,7 @@ interface UsePhotosParams {
 
 export interface Filters {
   page: number;
-  camera: RoverCamera | null;
+  camera: string;
   earthDate: string | null,
   solDate: string;
 }
@@ -28,7 +28,7 @@ const buildUrl: BuildUrl = ({
   solDate,
 }) => {
   const roverQuery = `/rovers/${rover}/photos`;
-  const cameraQuery = camera ? `&camera=${camera.id}` : '';
+  const cameraQuery = camera ? `&camera=${camera}` : '';
   const earthDateQuery = earthDate ? `&earth_date=${dayjs().format('YYYY-MM-DD')}` : '';
   const solQuery = !earthDate ? `&sol=${solDate}` : '';
   const pageQuery = `&page=${page + 1}`;
@@ -41,7 +41,7 @@ const usePhotos = ({ rover }: UsePhotosParams) => {
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState<Filters>({
     page: 0,
-    camera: null,
+    camera: '',
     earthDate: null,
     solDate: '2890',
   });
@@ -61,12 +61,11 @@ const usePhotos = ({ rover }: UsePhotosParams) => {
     }).catch(() => {
       setIsLoading(false);
     });
-  }, [rover, filters.page]);
+  }, [rover, filters.page, filters.camera]);
 
   useEffect(() => {
-    console.log('useEffect')
     fetchPhotos();
-  }, [rover, filters.page, fetchPhotos]);
+  }, [rover, filters.page, filters.camera, fetchPhotos]);
 
   return {
     filters,

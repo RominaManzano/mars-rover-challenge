@@ -43,8 +43,6 @@ describe('<RoverPage />', () => {
     const { getByText } = renderRoverPage();
     const nextPageButton = getByText('next');
 
-    console.log(nextPageButton.onclick);
-
     act(() => {
       userEvent.click(nextPageButton);
     });
