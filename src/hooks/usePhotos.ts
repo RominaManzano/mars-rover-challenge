@@ -14,8 +14,8 @@ interface UsePhotosParams {
 export interface Filters {
   page: number;
   camera: string;
-  earthDate: string | null,
-  solDate: string | null;
+  earthDate: string,
+  solDate: string;
 }
 
 type BuildUrl = (params: Filters & UsePhotosParams) => string;
@@ -42,8 +42,8 @@ const usePhotos = ({ rover }: UsePhotosParams) => {
   const [filters, setFilters] = useState<Filters>({
     page: 0,
     camera: '',
-    earthDate: null,
-    solDate: null,
+    earthDate: '',
+    solDate: '',
   });
 
   const fetchPhotos = useCallback(() => {

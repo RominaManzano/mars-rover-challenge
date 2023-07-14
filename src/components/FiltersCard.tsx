@@ -5,7 +5,7 @@ import { Filters } from '@/hooks/usePhotos';
 import cameras from '@/constants/cameras';
 import { Rover } from '@/types/Rover.type';
 
-interface FiltersCardProps {
+export interface FiltersCardProps {
   filters: Filters;
   setFilters: (value: React.SetStateAction<Filters>) => void,
   rover: Rover;
@@ -31,6 +31,7 @@ const FiltersCard: React.FC<FiltersCardProps> = ({
       <Formik initialValues={filters} onSubmit={handleSubmit}>
         {({ setFieldValue }) => (
           <Form className="w-full flex flex-col md:flex-row justify-center gap-4 my-8 text-black">
+            <label htmlFor="camera" className="text-white">Camera</label>
             <Field
               as="select"
               name="camera"
@@ -44,9 +45,15 @@ const FiltersCard: React.FC<FiltersCardProps> = ({
             </Field>
 
             {dateFilter === 'earth' ? (
-              <Field name="earthDate" type="date" />
+              <>
+                <label htmlFor="earthDate" className="text-white">Earth Date</label>
+                <Field name="earthDate" type="date" />
+              </>
             ) : (
-              <Field name="solDate" type="number" min={0} max={9999} />
+              <>
+                <label htmlFor="solDate" className="text-white">Sol Date</label>
+                <Field name="solDate" type="number" min={0} max={9999} />
+              </>
             )}
 
             <div className="text-white">
