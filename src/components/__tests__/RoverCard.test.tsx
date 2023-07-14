@@ -1,6 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
-import { useRouter } from 'next/router';
+import { render } from '@testing-library/react';
 
 import RoverCard, { Rover } from '../RoverCard';
 

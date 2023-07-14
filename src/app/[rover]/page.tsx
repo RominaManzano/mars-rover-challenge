@@ -1,7 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
+import ReactPaginate from 'react-paginate';
+import usePhotos from '@/hooks/usePhotos';
+
+export interface Props {
+  params: {
+    rover: string;
+  };
+}
 
 export const getStaticPaths = () => ({
   paths: [
@@ -12,22 +20,16 @@ export const getStaticPaths = () => ({
   fallback: true,
 });
 
-const RoverPage: React.FC = ({ params }: any) => {
+const RoverPage: React.FC<Props> = ({ params }) => {
   const { rover } = params;
-  const [photos, setPhotos] = useState([]);
+  const {
+    currentPage,
+    isLoading,
+    photos,
+    setCurrentPage,
+  } = usePhotos({ rover });
 
-  useEffect(() => {
-    fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/rovers/${rover}/photos?sol=1000&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}`
-    ).then((response) => {
-      response.json()
-        .then((data) => {
-          setPhotos(data.photos);
-        });
-    }); 
-  }, [rover]);
-
-  if (!photos || photos.length === 0) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -50,8 +52,24 @@ const RoverPage: React.FC = ({ params }: any) => {
           </div>
         ))}
       </div>
+
+      <ReactPaginate
+        previousLabel={'previous'}
+        nextLabel={'next'}
+        breakLabel={'...'}
+        // breakClassName={'break-me'}
+        // activeClassName={'active'}
+        containerClassName="flex gap-2 mt-8"
+        initialPage={currentPage}
+        pageCount={36}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={({ selected }) => {
+          setCurrentPage(selected);
+        }}
+      />
     </div>
-  )
-}
+  );
+};
 
 export default RoverPage;
