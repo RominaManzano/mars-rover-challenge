@@ -1,3 +1,4 @@
+import { Photo } from "@/types/Photo.type";
 import { useCallback, useEffect, useState } from "react";
 
 interface Options {
@@ -5,7 +6,7 @@ interface Options {
 }
 
 const usePhotos = ({ rover }: Options) => {
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState<Photo[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 

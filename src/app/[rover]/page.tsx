@@ -5,7 +5,7 @@ import Image from 'next/image';
 import ReactPaginate from 'react-paginate';
 import usePhotos from '@/hooks/usePhotos';
 
-interface Props {
+export interface Props {
   params: {
     rover: string;
   };
@@ -69,7 +69,7 @@ const RoverPage: React.FC<Props> = ({ params }) => {
         }}
       />
     </div>
-  )
-}
+  );
+};
 
 export default RoverPage;
