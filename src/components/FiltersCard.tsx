@@ -3,6 +3,7 @@ import { Field, Form, Formik } from 'formik';
 import { Filters } from '@/hooks/usePhotos';
 
 import cameras from '@/constants/cameras';
+import FieldContainer, { fieldClassName } from './FieldContainer';
 import { Rover } from '@/types/Rover.type';
 
 export interface FiltersCardProps {
@@ -31,30 +32,24 @@ const FiltersCard: React.FC<FiltersCardProps> = ({
       <Formik initialValues={filters} onSubmit={handleSubmit}>
         {({ setFieldValue }) => (
           <Form className="w-full flex flex-col md:flex-row justify-center gap-4 my-8 text-black">
-            <label htmlFor="camera" className="text-white">Camera</label>
-            <Field
-              as="select"
-              name="camera"
-            >
-              <option value="">All Cameras</option>
-              {cameras[rover].map((camera) => (
-                <option key={camera.id} value={camera.id}>
-                  {camera.name}
-                </option>
-              ))}
-            </Field>
+            <FieldContainer label="Camera">
+              <Field className={fieldClassName} as="select" name="camera">
+                <option value="">All Cameras</option>
+                {cameras[rover].map((camera) => (
+                  <option key={camera.id} value={camera.id}>
+                    {camera.name}
+                  </option>
+                ))}
+              </Field>
+            </FieldContainer>
 
-            {dateFilter === 'earth' ? (
-              <>
-                <label htmlFor="earthDate" className="text-white">Earth Date</label>
-                <Field name="earthDate" type="date" />
-              </>
-            ) : (
-              <>
-                <label htmlFor="solDate" className="text-white">Sol Date</label>
-                <Field name="solDate" type="number" min={0} max={9999} />
-              </>
-            )}
+            <FieldContainer label={dateFilter === 'earth' ? 'Earth Date' : 'Sol Date'}>
+              {dateFilter === 'earth' ? (
+                <Field className={fieldClassName} name="earthDate" type="date" />
+              ) : (
+                <Field className={fieldClassName} name="solDate" type="number" min={0} max={9999} />
+              )}
+            </FieldContainer>
 
             <div className="text-white">
               <div onClick={() => {
