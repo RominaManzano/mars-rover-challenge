@@ -5,7 +5,7 @@ import usePhotos from '@/hooks/usePhotos';
 import RoverPage, { Props } from '../app/[rover]/page';
 import { mockFilters } from '@/__mocks__/filters.mock';
 import { mockPhotos } from '@/__mocks__/photos.mock';
-import { Rover } from '@/components/RoverCard';
+import { Rover } from '@/types/Rover.type';
 
 jest.mock('../hooks/usePhotos');
 

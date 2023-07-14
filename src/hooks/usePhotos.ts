@@ -15,7 +15,7 @@ export interface Filters {
   page: number;
   camera: string;
   earthDate: string | null,
-  solDate: string;
+  solDate: string | null;
 }
 
 type BuildUrl = (params: Filters & UsePhotosParams) => string;
@@ -29,7 +29,7 @@ const buildUrl: BuildUrl = ({
 }) => {
   const roverQuery = `/rovers/${rover}/photos`;
   const cameraQuery = camera ? `&camera=${camera}` : '';
-  const earthDateQuery = earthDate ? `&earth_date=${dayjs().format('YYYY-MM-DD')}` : '';
+  const earthDateQuery = `&earth_date=${(earthDate ? dayjs(earthDate) : dayjs()).format('YYYY-MM-DD')}`;
   const solQuery = !earthDate ? `&sol=${solDate}` : '';
   const pageQuery = `&page=${page + 1}`;
 
@@ -43,7 +43,7 @@ const usePhotos = ({ rover }: UsePhotosParams) => {
     page: 0,
     camera: '',
     earthDate: null,
-    solDate: '2890',
+    solDate: null,
   });
 
   const fetchPhotos = useCallback(() => {
@@ -61,11 +61,11 @@ const usePhotos = ({ rover }: UsePhotosParams) => {
     }).catch(() => {
       setIsLoading(false);
     });
-  }, [rover, filters.page, filters.camera]);
+  }, [rover, filters.page, filters.camera, filters.earthDate, filters.solDate]);
 
   useEffect(() => {
     fetchPhotos();
-  }, [rover, filters.page, filters.camera, fetchPhotos]);
+  }, [rover, filters.page, filters.camera, filters.earthDate, filters.solDate, fetchPhotos]);
 
   return {
     filters,

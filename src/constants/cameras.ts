@@ -1,4 +1,4 @@
-import { Rover } from "@/components/RoverCard";
+import { Rover } from "@/types/Rover.type";
 
 export interface RoverCamera {
   id: string;

@@ -3,10 +3,10 @@
 import React from 'react';
 import Image from 'next/image';
 import ReactPaginate from 'react-paginate';
-import usePhotos, { Filters } from '@/hooks/usePhotos';
-import { Field, Form, Formik } from 'formik';
+import usePhotos from '@/hooks/usePhotos';
 
-import cameras from '@/constants/cameras';
+import FiltersCard from '@/components/FiltersCard';
+import { Rover } from '@/types/Rover.type';
 
 export interface Props {
   params: {
@@ -35,41 +35,13 @@ const RoverPage: React.FC<Props> = ({ params }) => {
   const noPhotosAvailable = !isLoading && (!photos || photos.length === 0);
   const photosAvailable = !isLoading && (photos && photos.length > 0);
 
-  const handleSubmit = (values: Filters) => {
-    setFilters(filters => ({
-      ...filters, ...values,
-    }));
-  };
-
   return (
     <div className="flex flex-col items-center">
       <h1 className="uppercase">
         {rover}
       </h1>
       
-      <div className="w-full">
-        <Formik initialValues={filters} onSubmit={handleSubmit}>
-          <Form className="w-full flex flex-col md:flex-row justify-center gap-4 my-8 text-black">
-            <Field
-              as="select"
-              name="camera"
-            >
-              <option value="">All Cameras</option>
-              {cameras[rover].map((camera) => (
-                <option key={camera.id} value={camera.id}>
-                  {camera.name}
-                </option>
-              ))}
-            </Field>
-            <Field name="earthDate" as="input" type="date" />
-            <Field name="solDate" />
-
-            <button type="submit" className="text-white">
-              Apply
-            </button>
-          </Form>
-        </Formik>
-      </div>
+      <FiltersCard filters={filters} setFilters={setFilters} rover={rover as Rover} />
 
       {isLoading && <div>Loading...</div>}
       {noPhotosAvailable && <div>No photos found</div>}
