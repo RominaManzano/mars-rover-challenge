@@ -1,7 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import RoverCard, { Rover } from '../RoverCard';
+import RoverCard from '../RoverCard';
+import { Rover } from '@/types/Rover.type';
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn()

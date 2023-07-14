@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 
 import Home from '../app/page';
-import { Rover } from '@/components/RoverCard';
+import { Rover } from '@/types/Rover.type';
 
 describe('<Home />', () => {
   it('should render the component', () => {

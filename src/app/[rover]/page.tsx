@@ -5,6 +5,9 @@ import Image from 'next/image';
 import ReactPaginate from 'react-paginate';
 import usePhotos from '@/hooks/usePhotos';
 
+import FiltersCard from '@/components/FiltersCard';
+import { Rover } from '@/types/Rover.type';
+
 export interface Props {
   params: {
     rover: string;
@@ -23,15 +26,14 @@ export const getStaticPaths = () => ({
 const RoverPage: React.FC<Props> = ({ params }) => {
   const { rover } = params;
   const {
-    currentPage,
+    filters,
     isLoading,
     photos,
-    setCurrentPage,
+    setFilters,
   } = usePhotos({ rover });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const noPhotosAvailable = !isLoading && (!photos || photos.length === 0);
+  const photosAvailable = !isLoading && (photos && photos.length > 0);
 
   return (
     <div className="flex flex-col items-center">
@@ -39,19 +41,26 @@ const RoverPage: React.FC<Props> = ({ params }) => {
         {rover}
       </h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        {photos.map((photo: any) => (
-          <div key={photo.id}>
-            <Image
-              src={photo.img_src}
-              alt={photo.id}
-              width={200}
-              height={200}
-              unoptimized
-            />
-          </div>
-        ))}
-      </div>
+      <FiltersCard filters={filters} setFilters={setFilters} rover={rover as Rover} />
+
+      {isLoading && <div>Loading...</div>}
+      {noPhotosAvailable && <div>No photos found</div>}
+
+      {photosAvailable && (
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {photos.map((photo: any) => (
+            <div key={photo.id}>
+              <Image
+                src={photo.img_src}
+                alt={photo.id}
+                width={200}
+                height={200}
+                unoptimized
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       <ReactPaginate
         previousLabel={'previous'}
@@ -60,12 +69,15 @@ const RoverPage: React.FC<Props> = ({ params }) => {
         // breakClassName={'break-me'}
         // activeClassName={'active'}
         containerClassName="flex gap-2 mt-8"
-        initialPage={currentPage}
-        pageCount={36}
+        initialPage={filters.page}
+        pageCount={30}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={({ selected }) => {
-          setCurrentPage(selected);
+          setFilters(filters => ({
+            ...filters,
+            page: selected,
+          }));
         }}
       />
     </div>

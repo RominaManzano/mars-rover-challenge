@@ -1,21 +1,58 @@
-import { Photo } from "@/types/Photo.type";
 import { useCallback, useEffect, useState } from "react";
+import dayjs from 'dayjs';
 
-interface Options {
+import { RoverCamera } from "@/constants/cameras";
+import { Photo } from "@/types/Photo.type";
+
+const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+interface UsePhotosParams {
   rover: string;
 }
 
-const usePhotos = ({ rover }: Options) => {
+export interface Filters {
+  page: number;
+  camera: string;
+  earthDate: string,
+  solDate: string;
+}
+
+type BuildUrl = (params: Filters & UsePhotosParams) => string;
+
+const buildUrl: BuildUrl = ({
+  rover,
+  camera,
+  page,
+  earthDate,
+  solDate,
+}) => {
+  const roverQuery = `/rovers/${rover}/photos`;
+  const cameraQuery = camera ? `&camera=${camera}` : '';
+  const earthDateQuery = `&earth_date=${(earthDate ? dayjs(earthDate) : dayjs()).format('YYYY-MM-DD')}`;
+  const solQuery = !earthDate ? `&sol=${solDate}` : '';
+  const pageQuery = `&page=${page + 1}`;
+
+  return `${apiUrl}${roverQuery}?api_key=${apiKey}${solQuery}${earthDateQuery}${pageQuery}${cameraQuery}`;
+};
+
+const usePhotos = ({ rover }: UsePhotosParams) => {
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [filters, setFilters] = useState<Filters>({
+    page: 0,
+    camera: '',
+    earthDate: '',
+    solDate: '',
+  });
 
   const fetchPhotos = useCallback(() => {
     setIsLoading(true);
 
-    fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/rovers/${rover}/photos?sol=1000&page=${currentPage + 1}&api_key=${process.env.NEXT_PUBLIC_API_KEY}`
-    ).then((response) => {
+    fetch(buildUrl({
+      rover,
+      ...filters,
+    })).then((response) => {
       response.json()
         .then((data) => {
           setPhotos(data.photos);
@@ -24,17 +61,17 @@ const usePhotos = ({ rover }: Options) => {
     }).catch(() => {
       setIsLoading(false);
     });
-  }, [rover, currentPage]);
+  }, [rover, filters.page, filters.camera, filters.earthDate, filters.solDate]);
 
   useEffect(() => {
     fetchPhotos();
-  }, [rover, currentPage, fetchPhotos]);
+  }, [rover, filters.page, filters.camera, filters.earthDate, filters.solDate, fetchPhotos]);
 
   return {
-    currentPage,
+    filters,
     isLoading,
     photos,
-    setCurrentPage,
+    setFilters,
   };
 };
 

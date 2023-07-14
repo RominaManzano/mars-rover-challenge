@@ -1,4 +1,5 @@
-import RoverCard, { Rover } from '@/components/RoverCard';
+import RoverCard from '@/components/RoverCard';
+import { Rover } from '@/types/Rover.type';
 
 const Home: React.FC = () => (
   <main className="flex min-h-screen flex-col md:flex-row items-center justify-between p-24 gap-8">

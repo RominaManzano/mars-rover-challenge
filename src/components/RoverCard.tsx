@@ -2,11 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export enum Rover {
-  CURIOSITY = 'curiosity',
-  OPPORTUNITY = 'opportunity',
-  SPIRIT = 'spirit',
-};
+import { Rover } from '@/types/Rover.type';
 
 interface RoverCardProps {
   name: Rover;

@@ -1,15 +1,16 @@
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import usePhotos from '@/hooks/usePhotos';
 import RoverPage, { Props } from '../app/[rover]/page';
-import { Rover } from '@/components/RoverCard';
+import { mockFilters } from '@/__mocks__/filters.mock';
 import { mockPhotos } from '@/__mocks__/photos.mock';
+import { Rover } from '@/types/Rover.type';
 
 jest.mock('../hooks/usePhotos');
 
 const mockUsePhotos = usePhotos as jest.MockedFunction<typeof usePhotos>;
-const setCurrentPageMock = jest.fn();
+const setFiltersMock = jest.fn();
 
 const defaultProps: Props = { params: { rover: Rover.CURIOSITY } };
 
@@ -20,10 +21,10 @@ const renderRoverPage = (props: Props = defaultProps) => (
 describe('<RoverPage />', () => {
   beforeEach(() => {
     mockUsePhotos.mockReturnValue({
-      currentPage: 1,
+      filters: mockFilters,
       isLoading: false,
       photos: mockPhotos,
-      setCurrentPage: setCurrentPageMock,
+      setFilters: setFiltersMock,
     });
   });
 
@@ -38,12 +39,14 @@ describe('<RoverPage />', () => {
     expect(photoElements).toHaveLength(mockPhotos.length);
   });
 
-  it('should call setCurrentPage when page is changed', () => {
+  it('should call setFilters when page is changed', () => {
     const { getByText } = renderRoverPage();
     const nextPageButton = getByText('next');
 
-    userEvent.click(nextPageButton);
+    act(() => {
+      userEvent.click(nextPageButton);
+    });
 
-    expect(setCurrentPageMock).toHaveBeenCalledWith(1);
+    expect(setFiltersMock).toHaveBeenCalled();
   });
 });
