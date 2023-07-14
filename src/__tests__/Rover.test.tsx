@@ -24,6 +24,9 @@ describe('<RoverPage />', () => {
       isLoading: false,
       photos: mockPhotos,
       setCurrentPage: setCurrentPageMock,
+      setCamera: jest.fn(),
+      setEarthDate: jest.fn(),
+      setSolDate: jest.fn(),
     });
   });
 

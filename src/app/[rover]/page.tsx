@@ -61,7 +61,7 @@ const RoverPage: React.FC<Props> = ({ params }) => {
         // activeClassName={'active'}
         containerClassName="flex gap-2 mt-8"
         initialPage={currentPage}
-        pageCount={36}
+        pageCount={30}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={({ selected }) => {
