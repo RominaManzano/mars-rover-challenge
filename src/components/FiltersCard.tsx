@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import dayjs from 'dayjs';
 import { Field, Form, Formik } from 'formik';
 import { Filters } from '@/hooks/usePhotos';
 
@@ -13,6 +14,13 @@ export interface FiltersCardProps {
   rover: Rover;
 }
 
+const shouldResetPage = (prevFilters: Filters, newFilters: Filters) => {
+  if (prevFilters.solDate !== newFilters.solDate) return true;
+  if (!dayjs(prevFilters.earthDate).isSame(dayjs(newFilters.earthDate), 'day')) return true;
+
+  return false;
+};
+
 const FiltersCard: React.FC<FiltersCardProps> = ({
   filters,
   setFilters,
@@ -25,6 +33,7 @@ const FiltersCard: React.FC<FiltersCardProps> = ({
       ...filters,
       ...values,
       solDate: values?.solDate?.toString() || '',
+      page: shouldResetPage(filters, values) ? 0 : filters.page,
     }));
   };
 

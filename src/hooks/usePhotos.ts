@@ -29,7 +29,7 @@ const buildUrl: BuildUrl = ({
 }) => {
   const roverQuery = `/rovers/${rover}/photos`;
   const cameraQuery = camera ? `&camera=${camera}` : '';
-  const earthDateQuery = `&earth_date=${(earthDate ? dayjs(earthDate) : dayjs()).format('YYYY-MM-DD')}`;
+  const earthDateQuery = !solDate ? `&earth_date=${(earthDate ? dayjs(earthDate) : dayjs()).format('YYYY-MM-DD')}` : '';
   const solQuery = !earthDate ? `&sol=${solDate}` : '';
   const pageQuery = `&page=${page + 1}`;
 
