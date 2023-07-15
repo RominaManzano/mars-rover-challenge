@@ -30,7 +30,7 @@ const BackTopButton = () => {
   return isVisible && (
     <div className="w-full flex justify-center md:justify-end">
       <button
-        data-testid="scroll-to-top-button"
+        data-testid="back-top-button"
         className="flex justify-center items-center border-2 border-white rounded-full py-4 px-4"
         onClick={scrollToTop}
       >

@@ -31,7 +31,7 @@ const FilterSwitch: React.FC<FilterSwitchProps> = ({
           });
         }}
       >
-        <GlobeAmericasIcon className="h-8 w-8" />
+        <GlobeAmericasIcon title='Earth' className="h-8 w-8" />
       </div>
       <div
         className={classnames(baseClasses, isMars ? 'bg-martian-red' : deselectedClasses)}

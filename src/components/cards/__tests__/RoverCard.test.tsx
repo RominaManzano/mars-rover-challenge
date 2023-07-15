@@ -6,7 +6,7 @@ import { Rover } from '@/types/Rover.type';
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn()
-}))
+}));
 
 describe('<RoverCard />', () => {
   it('should render the component with the correct props', () => {

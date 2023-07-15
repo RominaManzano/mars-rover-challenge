@@ -1,5 +1,5 @@
-import PageTitle from '@/components/PageTitle';
-import RoverCard from '@/components/RoverCard';
+import PageTitle from '@/components/common/PageTitle';
+import RoverCard from '@/components/cards/RoverCard';
 import { Rover } from '@/types/Rover.type';
 
 const Home: React.FC = () => {

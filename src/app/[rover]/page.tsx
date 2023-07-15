@@ -5,12 +5,13 @@ import ReactPaginate from 'react-paginate';
 import usePhotos from '@/hooks/usePhotos';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
-import BackHomeButton from '@/components/BackHomeButton';
-import BackTopButton from '@/components/BackTopButton';
-import FiltersCard from '@/components/FiltersCard';
-import PageTitle from '@/components/PageTitle';
-import PhotoCard from '@/components/PhotoCard';
-import Spinner from '@/components/Spinner';
+import BackHomeButton from '@/components/buttons/BackHomeButton';
+import BackTopButton from '@/components/buttons/BackTopButton';
+import FiltersCard from '@/components/cards/FiltersCard';
+import PageTitle from '@/components/common/PageTitle';
+import PhotoCard from '@/components/cards/PhotoCard';
+import Spinner from '@/components/common/Spinner';
+import { getPageCount } from '@/helpers/photos.helper';
 import { Photo } from '@/types/Photo.type';
 import { Rover } from '@/types/Rover.type';
 
@@ -28,18 +29,6 @@ export const getStaticPaths = () => ({
   ],
   fallback: true,
 });
-
-const getPageCount = (currentPageTotal: number, page: number) => {
-  if ((page === 0) && (currentPageTotal === 0)) {
-    return 0;
-  }
-  
-  if ((page === 0) && (currentPageTotal < 25)) {
-    return 1;
-  }
-
-  return 8;
-};
 
 const RoverPage: React.FC<Props> = ({ params }) => {
   const { rover } = params;
