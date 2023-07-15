@@ -2,9 +2,11 @@ import { fireEvent, render } from '@testing-library/react';
 
 import BackTopButton from '../BackTopButton';
 
+const renderBackTopButton = () => render(<BackTopButton />);
+
 describe('<BackTopButton />', () => {
   it('should show the button when scrolling beyond 300px', () => {
-    const { container } = render(<BackTopButton />);
+    const { container } = renderBackTopButton();
 
     window.scrollY = 400;
     fireEvent.scroll(window);
@@ -13,7 +15,7 @@ describe('<BackTopButton />', () => {
   });
 
   it('should hide the button when scrolling within 300px', () => {
-    const { container } = render(<BackTopButton />);
+    const { container } = renderBackTopButton();
 
     window.scrollY = 200;
     fireEvent.scroll(window);
@@ -22,7 +24,7 @@ describe('<BackTopButton />', () => {
   });
 
   it('should scroll to top when the button is clicked', () => {
-    render(<BackTopButton />);
+    renderBackTopButton();
     
     const button = document.querySelector("[data-testid='scroll-to-top-button']");
     window.scrollTo = jest.fn();
