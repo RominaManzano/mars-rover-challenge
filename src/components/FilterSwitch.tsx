@@ -43,7 +43,7 @@ const FilterSwitch: React.FC<FilterSwitchProps> = ({
         Sol
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default FilterSwitch
