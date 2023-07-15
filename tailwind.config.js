@@ -8,10 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // 'deep-mars-red': '#8B0000',
-      // 'rusty-orange': '#A0522D',
         'martian-soil-orange': '#FFA500',
-      //   indigoBlue: '#2E3842',
         'martian-red': '#FF4500',
         'cosmic-blue': '#000080',
       },

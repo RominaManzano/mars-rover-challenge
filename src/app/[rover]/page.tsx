@@ -1,19 +1,18 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
 import ReactPaginate from 'react-paginate';
 import usePhotos from '@/hooks/usePhotos';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
+import BackHomeButton from '@/components/BackHomeButton';
+import BackTopButton from '@/components/BackTopButton';
 import FiltersCard from '@/components/FiltersCard';
 import PageTitle from '@/components/PageTitle';
-import { Rover } from '@/types/Rover.type';
-import BackHomeButton from '@/components/BackHomeButton';
+import PhotoCard from '@/components/PhotoCard';
 import Spinner from '@/components/Spinner';
 import { Photo } from '@/types/Photo.type';
-import PhotoCard from '@/components/PhotoCard';
-import BackTopButton from '@/components/BackTopButton';
+import { Rover } from '@/types/Rover.type';
 
 export interface Props {
   params: {
@@ -58,6 +57,7 @@ const RoverPage: React.FC<Props> = ({ params }) => {
   return (
     <div className="min-h-screen">
       <BackHomeButton />
+  
       <div className="flex flex-col items-center p-16">
         <PageTitle title={rover} />
         
