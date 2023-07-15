@@ -13,6 +13,7 @@ import BackHomeButton from '@/components/BackHomeButton';
 import Spinner from '@/components/Spinner';
 import { Photo } from '@/types/Photo.type';
 import PhotoCard from '@/components/PhotoCard';
+import BackTopButton from '@/components/BackTopButton';
 
 export interface Props {
   params: {
@@ -76,7 +77,7 @@ const RoverPage: React.FC<Props> = ({ params }) => {
         )}
 
         {pageCount > 0 && (
-          <div className="my-8 max-w-screen-sm font-sm">
+          <div className="w-full flex justify-center my-10 max-w-screen-sm font-sm border-t border-white">
             <ReactPaginate
               previousLabel={<ChevronLeftIcon className="h-6 w-6 text-white" />}
               nextLabel={<ChevronRightIcon className="h-6 w-6 text-white" />}
@@ -96,6 +97,8 @@ const RoverPage: React.FC<Props> = ({ params }) => {
             />
           </div>
         )}
+
+        <BackTopButton />
       </div>
     </div>
   );
