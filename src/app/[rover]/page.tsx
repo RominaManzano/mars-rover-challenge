@@ -36,7 +36,7 @@ const RoverPage: React.FC<Props> = ({ params }) => {
   const photosAvailable = !isLoading && (photos && photos.length > 0);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center min-h-screen">
       <h1 className="uppercase">
         {rover}
       </h1>
