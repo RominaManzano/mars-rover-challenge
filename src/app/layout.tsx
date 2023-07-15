@@ -15,7 +15,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const backgroundClasses = 'bg-gradient-to-br from-black via-black to-orange-900 h-screen';
+  const backgroundClasses = 'bg-gradient-to-br from-black via-black to-orange-900 bg-cover';
 
   return (
     <html lang="en">
