@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { useFormikContext } from 'formik';
+import { GlobeAmericasIcon, SunIcon } from '@heroicons/react/24/outline';
 
 type SetDateFilter = (value: React.SetStateAction<"earth" | "mars">) => void;
 
@@ -30,7 +31,7 @@ const FilterSwitch: React.FC<FilterSwitchProps> = ({
           });
         }}
       >
-        Earth
+        <GlobeAmericasIcon className="h-8 w-8" />
       </div>
       <div
         className={classnames(baseClasses, isMars ? 'bg-martian-red' : deselectedClasses)}
@@ -40,7 +41,7 @@ const FilterSwitch: React.FC<FilterSwitchProps> = ({
           });
         }}
       >
-        Sol
+        <SunIcon className="h-8 w-8" />
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import ReactPaginate from 'react-paginate';
 import usePhotos from '@/hooks/usePhotos';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 import FiltersCard from '@/components/FiltersCard';
 import { Rover } from '@/types/Rover.type';
@@ -22,6 +23,14 @@ export const getStaticPaths = () => ({
   ],
   fallback: true,
 });
+
+const getPageCount = (currentPageTotal: number, page: number) => {
+  if ((page === 0) && (currentPageTotal < 25)) {
+    return 1;
+  }
+
+  return 8;
+};
 
 const RoverPage: React.FC<Props> = ({ params }) => {
   const { rover } = params;
@@ -62,24 +71,25 @@ const RoverPage: React.FC<Props> = ({ params }) => {
         </div>
       )}
 
-      <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
-        breakLabel={'...'}
-        // breakClassName={'break-me'}
-        // activeClassName={'active'}
-        containerClassName="flex gap-2 mt-8"
-        initialPage={filters.page}
-        pageCount={30}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        onPageChange={({ selected }) => {
-          setFilters(filters => ({
-            ...filters,
-            page: selected,
-          }));
-        }}
-      />
+      <div className="my-8 max-w-screen-sm font-sm">
+        <ReactPaginate
+          previousLabel={<ChevronLeftIcon className="h-6 w-6 text-white" />}
+          nextLabel={<ChevronRightIcon className="h-6 w-6 text-white" />}
+          breakLabel={'...'}
+          activeClassName="border border-white rounded-full py-2 px-4 text-white"
+          containerClassName="flex items-center gap-4 mt-8 text-slate-300 font-bold"
+          initialPage={filters.page}
+          pageCount={getPageCount(photos.length, filters.page)}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={4}
+          onPageChange={({ selected }) => {
+            setFilters(filters => ({
+              ...filters,
+              page: selected,
+            }));
+          }}
+        />
+      </div>
     </div>
   );
 };
