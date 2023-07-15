@@ -7,7 +7,9 @@ import usePhotos from '@/hooks/usePhotos';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 import FiltersCard from '@/components/FiltersCard';
+import PageTitle from '@/components/PageTitle';
 import { Rover } from '@/types/Rover.type';
+import BackHomeButton from '@/components/BackHomeButton';
 
 export interface Props {
   params: {
@@ -45,50 +47,51 @@ const RoverPage: React.FC<Props> = ({ params }) => {
   const photosAvailable = !isLoading && (photos && photos.length > 0);
 
   return (
-    <div className="flex flex-col items-center min-h-screen">
-      <h1 className="uppercase">
-        {rover}
-      </h1>
-      
-      <FiltersCard filters={filters} setFilters={setFilters} rover={rover as Rover} />
+    <div className="min-h-screen">
+      <BackHomeButton />
+      <div className="flex flex-col items-center p-16">
+        <PageTitle title={rover} />
+        
+        <FiltersCard filters={filters} setFilters={setFilters} rover={rover as Rover} />
 
-      {isLoading && <div>Loading...</div>}
-      {noPhotosAvailable && <div>No photos found</div>}
+        {isLoading && <div>Loading...</div>}
+        {noPhotosAvailable && <div>No photos found</div>}
 
-      {photosAvailable && (
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {photos.map((photo: any) => (
-            <div key={photo.id}>
-              <Image
-                src={photo.img_src}
-                alt={photo.id}
-                width={200}
-                height={200}
-                unoptimized
-              />
-            </div>
-          ))}
+        {photosAvailable && (
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {photos.map((photo: any) => (
+              <div key={photo.id}>
+                <Image
+                  src={photo.img_src}
+                  alt={photo.id}
+                  width={200}
+                  height={200}
+                  unoptimized
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="my-8 max-w-screen-sm font-sm">
+          <ReactPaginate
+            previousLabel={<ChevronLeftIcon className="h-6 w-6 text-white" />}
+            nextLabel={<ChevronRightIcon className="h-6 w-6 text-white" />}
+            breakLabel={'...'}
+            activeClassName="border border-white rounded-full py-2 px-4 text-white"
+            containerClassName="flex items-center gap-4 mt-8 text-slate-300 font-bold"
+            initialPage={filters.page}
+            pageCount={getPageCount(photos.length, filters.page)}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={4}
+            onPageChange={({ selected }) => {
+              setFilters(filters => ({
+                ...filters,
+                page: selected,
+              }));
+            }}
+          />
         </div>
-      )}
-
-      <div className="my-8 max-w-screen-sm font-sm">
-        <ReactPaginate
-          previousLabel={<ChevronLeftIcon className="h-6 w-6 text-white" />}
-          nextLabel={<ChevronRightIcon className="h-6 w-6 text-white" />}
-          breakLabel={'...'}
-          activeClassName="border border-white rounded-full py-2 px-4 text-white"
-          containerClassName="flex items-center gap-4 mt-8 text-slate-300 font-bold"
-          initialPage={filters.page}
-          pageCount={getPageCount(photos.length, filters.page)}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={4}
-          onPageChange={({ selected }) => {
-            setFilters(filters => ({
-              ...filters,
-              page: selected,
-            }));
-          }}
-        />
       </div>
     </div>
   );
