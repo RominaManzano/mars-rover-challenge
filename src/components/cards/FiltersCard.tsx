@@ -4,8 +4,8 @@ import { Field, Form, Formik } from 'formik';
 import { Filters } from '@/hooks/usePhotos';
 
 import cameras from '@/constants/cameras';
-import FilterSwitch from './FilterSwitch';
-import FieldContainer, { fieldClassName } from './FieldContainer';
+import FilterSwitch from '../forms/FilterSwitch';
+import FieldContainer, { fieldClassName } from '../forms/FieldContainer';
 import { Rover } from '@/types/Rover.type';
 
 export interface FiltersCardProps {

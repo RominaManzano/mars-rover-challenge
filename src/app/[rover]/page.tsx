@@ -5,12 +5,12 @@ import ReactPaginate from 'react-paginate';
 import usePhotos from '@/hooks/usePhotos';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
-import BackHomeButton from '@/components/BackHomeButton';
-import BackTopButton from '@/components/BackTopButton';
-import FiltersCard from '@/components/FiltersCard';
-import PageTitle from '@/components/PageTitle';
-import PhotoCard from '@/components/PhotoCard';
-import Spinner from '@/components/Spinner';
+import BackHomeButton from '@/components/buttons/BackHomeButton';
+import BackTopButton from '@/components/buttons/BackTopButton';
+import FiltersCard from '@/components/cards/FiltersCard';
+import PageTitle from '@/components/common/PageTitle';
+import PhotoCard from '@/components/cards/PhotoCard';
+import Spinner from '@/components/common/Spinner';
 import { Photo } from '@/types/Photo.type';
 import { Rover } from '@/types/Rover.type';
 
