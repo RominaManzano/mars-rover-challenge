@@ -40,8 +40,8 @@ describe('<RoverPage />', () => {
   });
 
   it('should call setFilters when page is changed', () => {
-    const { getByText } = renderRoverPage();
-    const nextPageButton = getByText('next');
+    const { getByLabelText } = renderRoverPage();
+    const nextPageButton = getByLabelText('Next page');
 
     act(() => {
       userEvent.click(nextPageButton);
