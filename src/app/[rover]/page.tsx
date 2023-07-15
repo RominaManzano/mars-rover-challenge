@@ -11,6 +11,7 @@ import FiltersCard from '@/components/cards/FiltersCard';
 import PageTitle from '@/components/common/PageTitle';
 import PhotoCard from '@/components/cards/PhotoCard';
 import Spinner from '@/components/common/Spinner';
+import { getPageCount } from '@/helpers/photos.helper';
 import { Photo } from '@/types/Photo.type';
 import { Rover } from '@/types/Rover.type';
 
@@ -28,18 +29,6 @@ export const getStaticPaths = () => ({
   ],
   fallback: true,
 });
-
-const getPageCount = (currentPageTotal: number, page: number) => {
-  if ((page === 0) && (currentPageTotal === 0)) {
-    return 0;
-  }
-  
-  if ((page === 0) && (currentPageTotal < 25)) {
-    return 1;
-  }
-
-  return 8;
-};
 
 const RoverPage: React.FC<Props> = ({ params }) => {
   const { rover } = params;
