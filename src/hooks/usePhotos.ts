@@ -42,7 +42,7 @@ const usePhotos = ({ rover }: UsePhotosParams) => {
   const [filters, setFilters] = useState<Filters>({
     page: 0,
     camera: '',
-    earthDate: '',
+    earthDate: dayjs().format('YYYY-MM-DD'),
     solDate: '',
   });
 
