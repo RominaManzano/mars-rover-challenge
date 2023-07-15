@@ -11,6 +11,8 @@ import PageTitle from '@/components/PageTitle';
 import { Rover } from '@/types/Rover.type';
 import BackHomeButton from '@/components/BackHomeButton';
 import Spinner from '@/components/Spinner';
+import { Photo } from '@/types/Photo.type';
+import PhotoCard from '@/components/PhotoCard';
 
 export interface Props {
   params: {
@@ -61,20 +63,14 @@ const RoverPage: React.FC<Props> = ({ params }) => {
         <FiltersCard filters={filters} setFilters={setFilters} rover={rover as Rover} />
 
         {isLoading && <Spinner />}
-        {noPhotosAvailable && <div className="italic opacity-80">No photos found</div>}
+        {noPhotosAvailable && (
+          <div className="italic opacity-80">No photos found</div>
+        )}
 
         {photosAvailable && (
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            {photos.map((photo: any) => (
-              <div key={photo.id}>
-                <Image
-                  src={photo.img_src}
-                  alt={photo.id}
-                  width={200}
-                  height={200}
-                  unoptimized
-                />
-              </div>
+            {photos.map((photo: Photo) => (
+              <PhotoCard key={photo.id} photo={photo} />
             ))}
           </div>
         )}
