@@ -6,17 +6,16 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    // colors: {
-    //   deepMarsRed: '#8B0000',
-    //   ruestiOrange: '#A0522D',
-    //   indigoBlue: '#2E3842',
-    //   ashenGray: '#808080',
-
-    //   martianRed: '#FF4500',
-    //   martianSoilOrane: '#FFA500',
-    //   cosmicBlue: '#000080',
-    //   neutral: '#F5F5F5',
-    // },
+    extend: {
+      colors: {
+      //   deepMarsRed: '#8B0000',
+      // 'rusty-orange': '#A0522D',
+      // 'martian-soil-orange': '#FFA500',
+      //   indigoBlue: '#2E3842',
+        'martian-red': '#FF4500',
+        'cosmic-blue': '#000080',
+      },
+    },
   },
   plugins: [],
 }

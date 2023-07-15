@@ -3,6 +3,7 @@ import { Field, Form, Formik } from 'formik';
 import { Filters } from '@/hooks/usePhotos';
 
 import cameras from '@/constants/cameras';
+import FilterSwitch from './FilterSwitch';
 import FieldContainer, { fieldClassName } from './FieldContainer';
 import { Rover } from '@/types/Rover.type';
 
@@ -30,47 +31,35 @@ const FiltersCard: React.FC<FiltersCardProps> = ({
   return (
     <div className="w-full">
       <Formik initialValues={filters} onSubmit={handleSubmit}>
-        {({ setFieldValue }) => (
-          <Form className="w-full flex flex-col md:flex-row justify-center gap-4 my-8 text-black">
-            <FieldContainer label="Camera">
-              <Field className={fieldClassName} as="select" name="camera">
-                <option value="">All Cameras</option>
-                {cameras[rover].map((camera) => (
-                  <option key={camera.id} value={camera.id}>
-                    {camera.name}
-                  </option>
-                ))}
-              </Field>
-            </FieldContainer>
+        <Form className="w-full flex flex-col lg:flex-row lg:justify-center lg:items-end items-center gap-4 my-8 text-black">
+          <FieldContainer label="Camera">
+            <Field className={fieldClassName} as="select" name="camera">
+              <option value="">All Cameras</option>
+              {cameras[rover].map((camera) => (
+                <option key={camera.id} value={camera.id}>
+                  {camera.name}
+                </option>
+              ))}
+            </Field>
+          </FieldContainer>
 
-            <FieldContainer label={dateFilter === 'earth' ? 'Earth Date' : 'Sol Date'}>
-              {dateFilter === 'earth' ? (
-                <Field className={fieldClassName} name="earthDate" type="date" />
-              ) : (
-                <Field className={fieldClassName} name="solDate" type="number" min={0} max={9999} />
-              )}
-            </FieldContainer>
+          <FieldContainer label={dateFilter === 'earth' ? 'Earth Date' : 'Sol Date'}>
+            {dateFilter === 'earth' ? (
+              <Field className={fieldClassName} name="earthDate" type="date" />
+            ) : (
+              <Field className={fieldClassName} name="solDate" type="number" min={0} max={9999} />
+            )}
+          </FieldContainer>
 
-            <div className="text-white">
-              <div onClick={() => {
-                setFieldValue('solDate', null).then(() => {
-                  setDateFilter('earth');
-                });
-              }}>
-                Earth
-              </div>
-              <div onClick={() => {
-                setFieldValue('earthDate', '').then(() => {
-                  setDateFilter('mars');
-                });
-              }}>Sol</div>
-            </div>
+          <FilterSwitch dateFilter={dateFilter} setDateFilter={setDateFilter} />
 
-            <button type="submit" className="text-white">
-              Apply
-            </button>
-          </Form>
-        )}
+          <button
+            type="submit"
+            className="h-10 text-white bg-yellow-800 hover:bg-yellow-700 w-20 rounded-lg font-bold uppercase text-sm"
+          >
+            Apply
+          </button>
+        </Form>
       </Formik>
     </div>
   );
